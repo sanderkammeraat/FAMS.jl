@@ -1,0 +1,13 @@
+name = "FAMS"
+uuid = "5fb5871d-a414-4ace-84db-d421d1b44f8d"
+authors = ["Sander Kammeraat <sanderkammeraat1212@gmail.com> and contributors"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.10.10"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
