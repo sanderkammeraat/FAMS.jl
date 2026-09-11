@@ -28,6 +28,7 @@ include("Fields.jl")
 include("FieldUpdaters.jl")
 include("SaveData.jl")
 include("LPlot.jl")
+include("Initial.jl")
 
 
 #Make structs available to user
@@ -37,6 +38,7 @@ include("LPlot.jl")
 @reexport using .Fields
 @reexport using .FieldUpdaters
 @reexport using .LPlot
+@reexport using .Initial
 @reexport using .SaveData
 
 #Convenience alias for StructArray for new users

@@ -25,7 +25,7 @@ function contribute_external_force!(i,current_particle_state, t, dt, rngs_partic
 
         η =sqrt( 2*force.Dr ) * rand(rngs_particles[p_i.id],Normal(0, 1))
 
-        current_particle_state.T[i] += p_i.T .+ η .* force.normal .* sqrt(dt)/dt 
+        current_particle_state.T[i] += current_particle_state.T[i] .+ η .* force.normal .* sqrt(dt)/dt 
     end
 
 end
@@ -40,10 +40,13 @@ function contribute_external_force!(i,current_particle_state, t, dt,rngs_particl
     p_i = current_particle_state[i]
     if p_i.type[1] in force.ontypes
         
-        if force.unit && (vnorm = norm(p_i.v) !=0)
-            current_particle_state.T[i]+= force.J*cross(p_i.p,  p_i.v)./vnorm
-        else
+        if !force.unit
             current_particle_state.T[i]+= force.J*cross(p_i.p,  p_i.v)
+        else
+            vnorm = norm(p_i.v)
+            if vnorm!=0
+                current_particle_state.T[i]+= force.J*cross(p_i.p,  p_i.v)./vnorm
+            end
         end
     end 
     return p_i

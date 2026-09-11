@@ -7,7 +7,7 @@ To install, do
 2) 'Pkg.add(url="https://github.com/sanderkammeraat/FAMS.jl")'
   
 You can then use it by running
-'using FAMS' 
+using FAMS
   
 For live plotting, add the import of GLMakie after the import of FAMS:
 'using GLMakie'  
