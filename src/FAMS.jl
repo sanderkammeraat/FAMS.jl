@@ -10,7 +10,6 @@ using StructArrays
 using Reexport
 using CairoMakie
 using Base.Cartesian
-using KernelAbstractions
 
 #Convenience export of packages for new users. Discutable practice...
 @reexport using Random
