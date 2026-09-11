@@ -1,7 +1,8 @@
-export overdamped_xvf
-struct overdamped_xvf
+
+struct overdamped_xvf<:LocalDOFevolver
     ontypes::Union{Int64,Vector{Int64}}
 end
+
 function evolve_locally!(i, current_particle_state, t, dt, dofevolver::overdamped_xvf)
     p_i = current_particle_state[i]
     if p_i.type[1] in dofevolver.ontypes
@@ -18,10 +19,11 @@ function evolve_locally!(i, current_particle_state, t, dt, dofevolver::overdampe
     return p_i
 end
 
-export overdamped_pqT
-struct overdamped_pqT
+
+struct overdamped_pqT<:LocalDOFevolver
     ontypes::Union{Int64,Vector{Int64}}
 end
+
 function evolve_locally!(i, current_particle_state, t, dt, dofevolver::overdamped_pqT)
     p_i = current_particle_state[i]
     if p_i.type[1] in dofevolver.ontypes

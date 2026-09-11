@@ -8,7 +8,7 @@ function FAMS.GLMakie_window_closeall()
 end
 
 function FAMS.setup_system_plotting(system_sizes,plot_functions,plotdim ,cpsO,cfsO,tO,fps;res=nothing,sbs=false)
-    GLMakie.activate!(; focus_on_show=true, title= "GLMakie: JAMs simulation", framerate=fps)
+    GLMakie.activate!(; focus_on_show=true, title= "GLMakie: FAMS simulation", framerate=fps)
     if !isnothing(res)
         f = Figure(size=res)
     else

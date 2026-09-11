@@ -12,4 +12,7 @@ include("Forces/External.jl")
 abstract type PairForce <:Force end
 include("Forces/Pair.jl")
 
+abstract type FieldForce <:Force end
+#include("Forces/Field.jl")
+
 end

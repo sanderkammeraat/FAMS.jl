@@ -29,3 +29,22 @@ function contribute_external_force!(i,current_particle_state, t, dt, rngs_partic
     end
 
 end
+
+
+struct self_align_with_v <: ExternalForce
+    ontypes::Union{Int64,Vector{Int64}}
+    J::Float64
+    unit::Bool
+end
+function contribute_external_force!(i,current_particle_state, t, dt,rngs_particles, system, force::self_align_with_v)
+    p_i = current_particle_state[i]
+    if p_i.type[1] in force.ontypes
+        
+        if force.unit && (vnorm = norm(p_i.v) !=0)
+            current_particle_state.T[i]+= force.J*cross(p_i.p,  p_i.v)./vnorm
+        else
+            current_particle_state.T[i]+= force.J*cross(p_i.p,  p_i.v)
+        end
+    end 
+    return p_i
+end
