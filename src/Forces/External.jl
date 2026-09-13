@@ -25,7 +25,7 @@ function contribute_external_force!(i,current_particle_state, t, dt, rngs_partic
 
         η =sqrt( 2*force.Dr ) * rand(rngs_particles[p_i.id],Normal(0, 1))
 
-        current_particle_state.T[i] += current_particle_state.T[i] .+ η .* force.normal .* sqrt(dt)/dt 
+        current_particle_state.T[i] +=  η .* force.normal .* sqrt(dt)/dt 
     end
 
 end
