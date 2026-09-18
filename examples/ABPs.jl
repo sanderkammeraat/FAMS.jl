@@ -5,11 +5,11 @@ using GLMakie
 
 function simulation()
 
-    forces = (Forces.self_align_with_v(1,10.,false),Forces.self_propulsion(1,0.2),Forces.planar_rotational_noise(ontypes=1,Dr=.001),Forces.repulsive_soft_disk(1,2.),)
+    forces = (Forces.self_align_with_v(1,0.4,false),Forces.self_propulsion(1,0.2),Forces.planar_rotational_noise(ontypes=1,Dr=.01),Forces.repulsive_soft_disk(1,2.),)
 
     dofevolvers = (DOFevolvers.overdamped_xvf(1),DOFevolvers.overdamped_pqT(1))
 
-    N=10000
+    N=1000
     ϕ = 1.1
     poly=15e-2
     Rs =rand(Uniform(1-poly, 1+poly),N)
@@ -28,7 +28,7 @@ function simulation()
     system = System(sizes=sizes, initial_particle_state = initial_state,forces = forces, dofevolvers = dofevolvers, Periodic=true,rcut_pair_global=2.5*(1+poly));
 
     
-    sim = Euler_integrator(system,0.05, 1e4,Tplot=10,fps=60,plot_functions=(LPlot.disks_v_orientation!,LPlot.directors!),plotdim=2); 
+    sim = Euler_integrator(system,0.01, 300,Tplot=100,fps=60,plot_functions=(LPlot.disks_v_orientation!,LPlot.directors!),plotdim=2); 
     return sim;
 
 end
