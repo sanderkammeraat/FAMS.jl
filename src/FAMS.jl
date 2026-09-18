@@ -9,6 +9,7 @@ using Observables
 using StructArrays
 using Reexport
 using CairoMakie
+using JLD2
 using Base.Cartesian
 
 #Convenience export of packages for new users. Discutable practice...

@@ -5,7 +5,7 @@ using GLMakie
 
 function simulation()
 
-    forces = (Forces.self_align_with_v(1,0.,false),Forces.self_propulsion(1,0.2),Forces.planar_rotational_noise(ontypes=1,Dr=.001),Forces.repulsive_soft_disk(1,2.),)
+    forces = (Forces.self_align_with_v(1,10.,false),Forces.self_propulsion(1,0.2),Forces.planar_rotational_noise(ontypes=1,Dr=.001),Forces.repulsive_soft_disk(1,2.),)
 
     dofevolvers = (DOFevolvers.overdamped_xvf(1),DOFevolvers.overdamped_pqT(1))
 

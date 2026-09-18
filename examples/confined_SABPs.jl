@@ -8,7 +8,7 @@ function relaxation()
     dofevolvers = (DOFevolvers.overdamped_xvf(1),DOFevolvers.overdamped_pqT(1))
 
     aspect = 1
-    Lx = 80. *aspect
+    Lx = 100. *aspect
     Ly = Lx /aspect^2
     phi = 1.3
     poly=15e-9
@@ -32,7 +32,7 @@ function relaxation()
 
     system = System(sizes=sizes, initial_particle_state = initial_state,forces = forces, dofevolvers = dofevolvers, Periodic=true,rcut_pair_global=2.5*(1+poly));
 
-    sim = Euler_integrator(system,0.05, 1e3,Tplot=10,fps=60,plot_functions=(LPlot.disks_v_orientation!,LPlot.directors!),plotdim=2); 
+    sim = Euler_integrator(system,0.05, 1e3,Tplot=100,fps=60,plot_functions=(LPlot.disks_v_orientation!,LPlot.directors!),plotdim=2); 
     return sim;
 
 end
