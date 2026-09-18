@@ -19,7 +19,7 @@ current_particle_state.x[i] = mod.(current_particle_state.x[i] .+ systemsizes ./
     #     end
     
     # end    
-    return p_i
+    return current_particle_state
 end
 
 #Initialize unwrapped coordinates to save the user the hassle to set equal to the initial wrapped coordinates
@@ -32,14 +32,11 @@ function init_unwrap!(i,current_particle_state, t)
     return current_particle_state
 end
 #Initialize forces and torques to zero, for easy chaining of sims
-function init_f_q!(i,current_particle_state, t)
+function init_f_T!(i,current_particle_state, t)
 
     if t==0
         current_particle_state.f[i]*=0.
-
-        if :q in fieldnames(typeof(current_particle_state[i]))
-            current_particle_state.T[i]*=0.
-        end
+        current_particle_state.T[i]*=0.
     end
     return current_particle_state
 end
@@ -172,7 +169,7 @@ struct SIM{T1, T2, T3, T4}
     final_field_state::T2
     dt::T3
     t_stop::T4
-    system::System
+    system::System #Note that system will contain the initial states
 end
 function save_raw_force_data!(file, preamble, force)
 
@@ -520,17 +517,18 @@ function Euler_integrator(system, dt, t_stop; seed=nothing, Tsave=nothing, save_
                 end
             end
 
-
+            final_particle_state = deepcopy(current_particle_state)
+            final_field_state = deepcopy(current_field_state)
+            
             #Save the states before the final dof step
             if n==n_final_save
 
-                final_particle_state = deepcopy(current_particle_state)
-                final_field_state = deepcopy(current_field_state)
+
 
                 if !isnothing(Tsave)
                     jldopen(joinpath(save_folder_path, JAMs_final_state_file_name),"a+",iotype=IOStream ) do JAMs_file
 
-                        JAMs_file["SIM"]=SIM(deepcopy(current_particle_state), deepcopy(current_field_state), deepcopy(dt), deepcopy(t_stop), deepcopy(system));
+                        JAMs_file["SIM"]=SIM(final_particle_state, final_field_state, deepcopy(dt), deepcopy(t_stop), deepcopy(system));
                     end
                 end
 
@@ -608,7 +606,7 @@ function threaded_particle_step!(current_particle_state,Next,external_forces, Np
     Threads.@threads for i in eachindex(current_particle_state)
             p_i = current_particle_state[i]
             init_unwrap!(i,current_particle_state, t)
-            init_f_q!(i,current_particle_state, t)
+            init_f_T!(i,current_particle_state, t)
             particle_step!(i, current_particle_state,Next,external_forces, Npair,pair_forces,t, dt, system,cells,cell_bin_centers,stencils,rngs_particles)
         end
     return current_particle_state
@@ -629,7 +627,7 @@ function threaded_periodic_bc!(current_particle_state,system)
         if system.Periodic
             periodic!(i,p_i,current_particle_state, system.sizes)
         end
-        check_outside_system(current_particle_state[i], system.sizes)
+        check_outside_system(i,current_particle_state, system.sizes)
     end
     return current_particle_state
 end
@@ -704,10 +702,11 @@ function particle_step!(i,current_particle_state,Next,external_forces,Npair,pair
     return current_particle_state
 end
 
-function check_outside_system(p_i, system_sizes)
-    for i in eachindex(p_i.x)
-        if p_i.x[i]>system_sizes[i]/2 || p_i.x[i]<-system_sizes[i]/2
-            error("JAMs: Particle outside simulation box. This invalidates cell lists. Suggested fix: make sure particles always stay inside system sizes by increasing the system size of the relevant dimension.")
+function check_outside_system(i, current_particle_state, system_sizes)
+    p_i = current_particle_state[i]
+    for j in eachindex(p_i.x)
+        if p_i.x[j]>system_sizes[j]/2 || p_i.x[j]<-system_sizes[j]/2
+            error("JAMs: Particle i = $i is outside simulation box dimension $j. This invalidates cell lists. Suggested fix: make sure particles always stay inside system sizes by increasing the system size of the relevant dimension.")
         end
     end
 
@@ -880,7 +879,7 @@ function update_cells!(current_particle_state, cells, cell_bin_centers,system,lb
             push!(cells[new_bin_location...],p_i.id)
         end
     end
-    return current_particle_state,cells
+    return current_particle_state, cells
 end
 
 

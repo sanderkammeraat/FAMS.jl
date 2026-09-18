@@ -5,10 +5,10 @@ using GLMakie
 function relaxation()
     forces = (Forces.repulsive_soft_disk([1,2],[1 2 ; 2 2]),)
 
-    dofevolvers = (DOFevolvers.overdamped_xvf(1),DOFevolvers.overdamped_pqT(1))
+    dofevolvers = (DOFevolvers.overdamped_xvf(1),DOFevolvers.overdamped_pqT_xyc(1))
 
     aspect = 1
-    Lx = 25. *aspect
+    Lx = 50. *aspect
     Ly = Lx /aspect^2
     phi = 1.3
     poly=15e-9
@@ -37,18 +37,23 @@ function relaxation()
 
 end
 rx=relaxation()
+rx.final_particle_state[27].T
+
+
 function sa_step(rx)
     forces = (Forces.self_align_with_v(1,0.1,true),Forces.self_propulsion(1,0.01),Forces.planar_rotational_noise(ontypes=1,Dr=0.01),Forces.repulsive_soft_disk([1,2],[1 2 ; 2 2]),)
 
     dofevolvers = (DOFevolvers.overdamped_xvf(1),DOFevolvers.overdamped_pqT(1))
 
+
+    
     initial_state = deepcopy(rx.final_particle_state)
     display(length(initial_state))
 
 
     system = System(sizes=rx.system.sizes, initial_particle_state = initial_state,forces = forces, dofevolvers = dofevolvers, Periodic=false,rcut_pair_global=rx.system.rcut_pair_global);
 
-    sim = Euler_integrator(system,0.05, 300,Tplot=10,fps=60,plot_functions=(LPlot.disks_v_orientation!,LPlot.directors!),plotdim=2); 
+    sim = Euler_integrator(system,0.05, 1e4,Tplot=10,fps=60,plot_functions=(LPlot.disks_v_orientation!,LPlot.directors!),plotdim=2); 
     return sim;
 
 end
