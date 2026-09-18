@@ -37,7 +37,6 @@ function relaxation()
 
 end
 rx=relaxation()
-rx.final_particle_state[27].T
 
 
 function sa_step(rx)
