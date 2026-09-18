@@ -5,7 +5,7 @@
 ## Description
 This is a Julia package to simulate (Soft) Active Matter. Its design is modular, so that you can mix and match different forces, particles and fields.
 
-The purpose of this package is twofold: on one hand it provides a convenient way to explore new active matter models by providing flexible construction of (types) of forces and particles (e.g. simple polar particles, or polymers). The exploration is facilated by an optional live plotting extension, leveraging GLMakie's efficient GPU plotting to render e.g. particle's positions, velocity vectors or polarties to quickly gauge what the system behaves like for different parameter values.
+The purpose of this package is twofold: on one hand it provides a convenient way to explore new active matter models by providing flexible construction of (types of) forces and particles (e.g. simple polar particles or polymers). The exploration is facilated by an optional live plotting extension, leveraging GLMakie's efficient GPU plotting to render e.g. particle's positions, velocity vectors or polarties to quickly gauge what the system behaves like for different parameter values.
 
 The second is to be performant to run production simulations for actual scientific analysis. The package has been through extensive profiling, is multi-threaded and easily runs on head-less clusters. Output is stored in the HDF5 format.
 
