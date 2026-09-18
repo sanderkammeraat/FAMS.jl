@@ -31,13 +31,5 @@ This will precompile the optional live plotting extension and enables it.
 
 ### Example
 See ```examples/ABPs.jl``` to see an example of how the live plotting looks like. It is a simulation of Active Brownian particles with self-alignment, so that the systems starts to flock in periodic boundary conditions.
-Here is a video showing a small system of 1000 particles.
-
-
-https://github.com/user-attachments/assets/75e125ed-0e5e-4379-89af-8dc8b0fced85
-
-
-
-
-
-
+Here is the equivalent GIF showing a small system of 1000 particles to illustrate how the live plotting looks like.
+<img width="320" height="320" alt="output2" src="https://github.com/user-attachments/assets/af768ad2-6279-4b2e-9091-56187d0b38a5" />
