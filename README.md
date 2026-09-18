@@ -34,3 +34,10 @@ See ```examples/ABPs.jl``` to see an example of how the live plotting looks like
 Here is a video showing a small system of 1000 particles.
 
 
+https://github.com/user-attachments/assets/75e125ed-0e5e-4379-89af-8dc8b0fced85
+
+
+
+
+
+
